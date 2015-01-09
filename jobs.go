@@ -19,33 +19,29 @@ type J struct {
 	Created time.Time `json:"created"`
 	// RunAt is the time this job should run at (or after).
 	RunAt time.Time `json:"runat" bson:"runat"`
-	// TargetDB is the target database name.
-	TargetDB string `json:"target_db" bson:"target_db"`
-	// TargetCollection is the target collection name.
-	TargetCollection string `json:"target_col" bson:"target_col"`
-	// TargetID is the ID of the target, inside the TargetCollection.
-	TargetID bson.ObjectId `json:"target_id" bson:"target_id"`
+	// Data is the user data for this job.
+	Data map[string]interface{} `json:"data" bson:"data"`
+
+	Retries int
+
+	RetryInterval time.Duration
 }
 
 // New creates a new job for the specified target.
-func New(target *mgo.Collection, targetID bson.ObjectId) *J {
+func New() *J {
 	return &J{
-		ID:               bson.NewObjectId(),
-		Status:           StatusNew,
-		Created:          time.Now(),
-		TargetDB:         target.Database.Name,
-		TargetCollection: target.Name,
-		TargetID:         targetID,
+		ID:      bson.NewObjectId(),
+		Status:  StatusNew,
+		Created: time.Now(),
+		Data:    make(map[string]interface{}),
 	}
 }
 
 // Put adds a new job to the specified collection.
-func Put(jobs *mgo.Collection, job *J) error {
-	return jobs.Insert(job)
-}
-
-// Try contains details of an attempt to run
-// a job.
-type Try struct {
-	When time.Time
+func Put(c *mgo.Collection, jobs ...*J) error {
+	inters := make([]interface{}, len(jobs))
+	for i, job := range jobs {
+		inters[i] = job
+	}
+	return c.Insert(inters...)
 }

@@ -26,9 +26,10 @@ func TestNew(t *testing.T) {
 		thing := bson.M{"_id": thingID}
 		is.NoErr(db.C("things").Insert(thing))
 
-		job := jobs.New(db.C("things"), thingID)
+		job := jobs.New()
 		now := time.Now()
 		job.RunAt = now
+		job.Data["something"] = true
 		err := jobs.Put(db.C("jobs"), job)
 		is.NoErr(err)
 
@@ -39,18 +40,10 @@ func TestNew(t *testing.T) {
 		is.Equal(job.ID, result["_id"])
 		is.NoErr(err)
 		is.Equal(result["runat"].(time.Time).Format("20060102"), now.Format("20060102"))
-		is.Equal("things", result["target_col"])
-		is.Equal("jobs-database", result["target_db"])
-		is.Equal(thingID, result["target_id"])
 		is.Equal(result["status"], jobs.StatusNew)
 		is.OK(result["tries"])
 		is.Equal(0, len(result["tries"].([]interface{})))
-
-	})
-}
-
-func TestRunner(t *testing.T) {
-	test(is.New(t), func(is is.I, db *mgo.Database) {
+		is.Equal(true, result["data"].(map[string]interface{})["something"])
 
 	})
 }
