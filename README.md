@@ -1,2 +1,3 @@
 # jobs
-Jobs API for Go.
+
+Jobs API for `mgo`.
