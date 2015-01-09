@@ -33,6 +33,7 @@ type Runner struct {
 	err      error
 	stoponce sync.Once
 	name     string
+	kind     string
 }
 
 // Start starts the process.
@@ -46,6 +47,7 @@ func (r *Runner) Start() error {
 			iter := r.c.Find(bson.M{
 				"status": bson.M{"$in": []interface{}{StatusNew, StatusWaiting}},
 				"runat":  bson.M{"$lte": time.Now()},
+				"kind":   r.kind,
 			}).Sort("created").Iter()
 			for iter.Next(&job) {
 
@@ -142,12 +144,16 @@ func (r *Runner) Err() error { return r.err }
 // Name is the name of the runner.
 func (r *Runner) Name() string { return r.name }
 
+// Kind is the name of the types of jobs this runner will process.
+func (r *Runner) Kind() string { return r.kind }
+
 // NewRunner makes a new Runner capable of running jobs.
-func NewRunner(name string, c *mgo.Collection, fn JobFunc) *Runner {
+func NewRunner(name string, c *mgo.Collection, kind string, fn JobFunc) *Runner {
 	return &Runner{
 		c:        c,
 		fn:       fn,
 		Interval: 500 * time.Millisecond,
 		name:     name,
+		kind:     kind,
 	}
 }

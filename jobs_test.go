@@ -26,7 +26,7 @@ func TestNew(t *testing.T) {
 		thing := bson.M{"_id": thingID}
 		is.NoErr(db.C("things").Insert(thing))
 
-		job := jobs.New()
+		job := jobs.New("things")
 		now := time.Now()
 		job.RunAt = now
 		job.Data["something"] = true

@@ -27,15 +27,19 @@ type J struct {
 	// RetryInterval is the time to wait after a failure before
 	// trying to run the job again.
 	RetryInterval time.Duration
+	// Kind is the kind for this job. Only runners with the same kind
+	// will be asked to process this job.
+	Kind string
 }
 
-// New creates a new job.
-func New() *J {
+// New creates a new job with the specified kind.
+func New(kind string) *J {
 	return &J{
 		ID:      bson.NewObjectId(),
 		Status:  StatusNew,
 		Created: time.Now(),
 		Data:    make(map[string]interface{}),
+		Kind:    kind,
 	}
 }
 
