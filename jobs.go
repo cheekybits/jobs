@@ -21,13 +21,15 @@ type J struct {
 	RunAt time.Time `json:"runat" bson:"runat"`
 	// Data is the user data for this job.
 	Data map[string]interface{} `json:"data" bson:"data"`
-
+	// Retries is the number of remaining attempts that will
+	// be made to run this job.
 	Retries int
-
+	// RetryInterval is the time to wait after a failure before
+	// trying to run the job again.
 	RetryInterval time.Duration
 }
 
-// New creates a new job for the specified target.
+// New creates a new job.
 func New() *J {
 	return &J{
 		ID:      bson.NewObjectId(),
@@ -37,7 +39,7 @@ func New() *J {
 	}
 }
 
-// Put adds a new job to the specified collection.
+// Put adds the jobs to the specified collection.
 func Put(c *mgo.Collection, jobs ...*J) error {
 	inters := make([]interface{}, len(jobs))
 	for i, job := range jobs {

@@ -11,9 +11,13 @@ import (
 // Try contains details of an attempt to run
 // a job.
 type Try struct {
+	// Runner is the name of the runner that tried to
+	// run this job.
 	Runner string
-	When   time.Time
-	Err    string
+	// When is a timestamp of when the attempt took place.
+	When time.Time
+	// Err is the error that was returned by JobFunc.
+	Err string
 }
 
 // JobFunc is the function that gets called for each
