@@ -147,7 +147,9 @@ func (r *Runner) Name() string { return r.name }
 // Kind is the name of the types of jobs this runner will process.
 func (r *Runner) Kind() string { return r.kind }
 
-// NewRunner makes a new Runner capable of running jobs.
+// NewRunner makes a new Runner capable of running jobs. The name should be unique
+// across a system. The mgo.Collection is where the job records live in MongoDB.
+// The kind string should match J.Kind values for jobs that this runner should execute.
 func NewRunner(name string, c *mgo.Collection, kind string, fn JobFunc) *Runner {
 	return &Runner{
 		c:        c,
