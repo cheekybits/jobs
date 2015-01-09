@@ -11,7 +11,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-func XTestRunnerEverythingOK(t *testing.T) {
+func TestRunnerEverythingOK(t *testing.T) {
 	test(is.New(t), func(is is.I, db *mgo.Database) {
 
 		// make three things
@@ -74,7 +74,7 @@ func XTestRunnerEverythingOK(t *testing.T) {
 	})
 }
 
-func XTestRunnerJobFailure(t *testing.T) {
+func TestRunnerJobFailure(t *testing.T) {
 	test(is.New(t), func(is is.I, db *mgo.Database) {
 
 		// make three things
