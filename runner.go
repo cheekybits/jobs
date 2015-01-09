@@ -13,11 +13,11 @@ import (
 type Try struct {
 	// Runner is the name of the runner that tried to
 	// run this job.
-	Runner string
+	Runner string `json:"runner" bson:"runner"`
 	// When is a timestamp of when the attempt took place.
-	When time.Time
+	When time.Time `json:"when" bson:"when"`
 	// Err is the error that was returned by JobFunc.
-	Err string
+	Err string `json:"err,omitempty" bson:"err,omitempty"`
 }
 
 // JobFunc is the function that gets called for each
