@@ -2,6 +2,12 @@
 
 Job management for MongoDB (via mgo).
 
+  * Simple API
+  * Jobs guaranteed to run only once (no matter how many runners)
+  * Retries
+  * Run jobs ASAP, or at a future date
+  * MongoDB as its backend
+
 ## Usage
 
 ```
