@@ -26,3 +26,4 @@ _testmain.go
 example/creator/creator
 
 example/runner/runner
+_db/
