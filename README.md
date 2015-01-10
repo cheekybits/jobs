@@ -1,5 +1,7 @@
 # jobs
 
+[![GoDoc](https://godoc.org/github.com/cheekybits/jobs?status.png)](http://godoc.org/github.com/cheekybits/jobs)
+
 Job management for MongoDB (via mgo).
 
   * Simple API
